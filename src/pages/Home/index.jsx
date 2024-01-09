@@ -1,11 +1,14 @@
 import React from 'react'
+import Header from '../../components/header/header'
 
 const index = () => {
   return (
-    <div>
-      <h1>welcome</h1>
-    </div>
+    <>
+      <Header/>
+      {/* <h1>Welcome to the landing page</h1> */}
+    </>
   )
 }
 
 export default index
+
