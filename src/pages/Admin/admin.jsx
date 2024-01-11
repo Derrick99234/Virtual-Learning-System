@@ -1,16 +1,24 @@
 import React from "react";
 import VideoCard from "../../components/VideoCard/VideoCard";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import lasu from "../../Images/lasu.png";
 import { useState } from "react";
 import FileUploadModal from "../../components/FileUploadModal/FileUploadModal";
+import { auth } from "./../../firebaseConfig";
+import { signOut } from "firebase/auth";
 
-const Admin = () => {
+const Admin = ({ currentUser }) => {
   const [openModal, setOpenModal] = useState(false);
 
   function showModal() {
     setOpenModal((prev) => !prev);
   }
+  const navigate = useNavigate();
+  // console.log(currentUser);
+  const logOut = async () => {
+    await signOut(auth);
+    navigate("/login");
+  };
   return (
     <>
       <section className="p-3 bg-white relative h-screen flex justify-around">
@@ -25,7 +33,9 @@ const Admin = () => {
             </Link>
           </div>
         </aside>
-        <main className="p-5 w-[78%] rounded-lg">
+        <main className="p-5 w-[78%] rounded-lg relative">
+        
+        {openModal && <FileUploadModal />}
           <header className="flex justify-between items-center">
             <div className="flex items-center">
               <img
@@ -48,10 +58,14 @@ const Admin = () => {
             </div>
 
             <div className="buttons">
+              <small className="text-gray-400">Hi {currentUser?.email}</small>
               <button className="bg-blue-400 py-2 font-semibold m-1 px-5 text-white rounded-lg">
                 0
               </button>
-              <button className="bg-blue-400 py-2 font-semibold m-1 px-5 text-white rounded-lg">
+              <button
+                className="bg-blue-400 py-2 font-semibold m-1 px-5 text-white rounded-lg"
+                onClick={logOut}
+              >
                 Log out
               </button>
             </div>
@@ -94,7 +108,6 @@ const Admin = () => {
           >
             +
           </button>
-          {openModal && <FileUploadModal />}
         </main>
       </section>
     </>

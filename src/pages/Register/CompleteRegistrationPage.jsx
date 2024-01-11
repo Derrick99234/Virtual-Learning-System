@@ -1,16 +1,18 @@
 import React, { useState, useContext } from "react";
 import { auth } from "./../../firebaseConfig";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/UserContext";
 
-function ComplteRegistrationPage() {
-  // const [userEmail, setUserEmail] = useState("");
+function ComplteRegistrationPage({setCurrentUser}) {
   const [userPass, setUserPass] = useState("");
   const [userPass2, setUserPass2] = useState("");
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
+  onAuthStateChanged(auth, (user) => {
+    setCurrentUser(user)
+  })
 
   const { user, setUser } = useContext(UserContext);
 

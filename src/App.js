@@ -13,6 +13,7 @@ import { useState } from "react";
 
 const App = () => {
   const [user, setUser] = useState("");
+  const [currentUser, setCurrentUser] = useState({});
   return (
     <>
       <BrowserRouter>
@@ -23,16 +24,24 @@ const App = () => {
               <Route path="*" element={<FourZeroFour />} />
               <Route path="register" element={<Register />} />
               <Route path="student" element={<Student />} />
-              <Route path="admin/" element={<Admin />}>
+              <Route
+                path="admin/"
+                element={<Admin currentUser={currentUser} />}
+              >
                 <Route path="courses" element={<Course />} />
               </Route>
               <Route path="profile" element={<Profile />} />
               <Route
                 path="complete-registration"
-                element={<CompleteRegistrationPage />}
+                element={
+                  <CompleteRegistrationPage setCurrentUser={setCurrentUser} />
+                }
               />
               <Route path="/home" element={<Home />} />
-              <Route path="/login" element={<Login />} />
+              <Route
+                path="/login"
+                element={<Login setCurrentUser={setCurrentUser} />}
+              />
             </Route>
           </Routes>
         </UserContext.Provider>

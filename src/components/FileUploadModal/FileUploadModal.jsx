@@ -22,11 +22,9 @@ function FileUploadModal() {
   }
   return (
     <>
-      <div className="fixed flex justify-center items-center h-screen w-full bg-slate-400/15">
-        <div className="w-[300px] h-[500px] bg-white rounded-md">
+      <div className="w-[300px] h-[500px] bg-white rounded-md absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] items-center z-10">
           <input type="file" onChange={getVideo} />
-          <button onClick={handleInput}>submit</button>
-        </div>
+          <button onClick={handleInput} className="bg-blue-500 rounded-md p-2 w-full text-white font-bold">submit</button>
       </div>
     </>
   );
