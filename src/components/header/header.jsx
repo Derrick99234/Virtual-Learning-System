@@ -10,7 +10,7 @@ const header = () => {
         <span>Lagos State University</span>
        </div>
         <div className="">
-          <button className="px-10 py-2 bg-blue-500 text-[13px] rounded-md text-white">Log out
+          <button className="px-10 py-2  text-[13px] rounded-md text-white">Log out
           <LogoutIcon
           className='h-[50px]'
           />
