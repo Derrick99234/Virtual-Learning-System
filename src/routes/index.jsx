@@ -7,14 +7,14 @@ import Login from '../pages/Login/login';
 import Student from '../pages/Student/student';
 import Register from '../pages/Register/register';
 import Profile from '../pages/Profile/profile';
-import Card from '../components/Card/card';
+// import Card from '../components/Card/card';
 
 
 
 const router = createBrowserRouter ([
   {path : "*",  element: <FourZeroFour/>},
   {path : "/",  element: <Login/>},
-  {path : "/register",  element: <Card/>},
+  {path : "/register",  element: <Register/>},
   {path : "/student",  element: <Student/>},
   {path : "/admin",  element: <Admin/>},
   {path : "/home",  element: <Home/>},

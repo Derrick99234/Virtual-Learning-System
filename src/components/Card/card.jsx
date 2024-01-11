@@ -1,6 +1,8 @@
 import React from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
+
+
 const Example = () => {
   return (
  <TiltCard />
@@ -65,13 +67,7 @@ const TiltCard = () => {
           
         }}
         className="absolute inset-4 grid place-content-center rounded-xl bg-white shadow-lg bg-gradient-to-br from-black to-blue-500 text-white" >
-        <p
-          style={{
-            transform: "translateZ(50px)",
-          }}
-          className="text-center text-2xl font-bold">
-          Login as Student 
-        </p>
+           <h3 className='text-2xl text-center'>Login as a Student</h3>
         <span className="text-center text-[10px]">To view your progress an to achieve more on what you do </span>
       </div>
     </motion.div>
