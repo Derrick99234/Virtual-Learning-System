@@ -1,7 +1,13 @@
 import React from 'react'
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useNavigate } from "react-router-dom"
+import {useContext} from "react"
+import UserContext from "../../contexts/UserContext"
 
 const AdminCard = () => {
+
+ 
+
     return (
         <TiltCard />
        
@@ -46,6 +52,15 @@ const AdminCard = () => {
            x.set(0);
            y.set(0);
          };
+
+         const {setLogin} = useContext(UserContext)
+
+          const navigate = useNavigate()
+          const handleClick = () => {
+            navigate("/login")
+            setLogin(false)
+
+          }
        
          return (
            <motion.div
@@ -55,18 +70,21 @@ const AdminCard = () => {
                rotateY,
                rotateX,
                transformStyle: "preserve-3d",
-             }}
+             }}x  
              className="relative h-[200px] w-72 rounded-xl bg-gradient-to-br from-orange-400 to-purple-500"
            >
              <div
                style={{
                  transform: "translateZ(75px)",
                  transformStyle: "preserve-3d",
-                 
                }}
-               className="absolute inset-4 grid place-content-center rounded-xl bg-white shadow-lg bg-gradient-to-br from-orange-400 to-purple-500 text-white" >
-                <h3 className='text-2xl text-center'>Login as Admin</h3>
-               <span className="text-center text-[10px]">To view your progress an to achieve more on what you do </span>
+               className="absolute inset-4 grid place-content-center rounded-xl bg-white shadow-lg bg-gradient-to-br from-orange-400 to-purple-500 text-white"
+               onClick={handleClick}
+             >
+               <h3 className="text-2xl text-center">Login as Admin</h3>
+               <span className="text-center text-[10px]">
+                 To view your progress an to achieve more on what you do{" "}
+               </span>
              </div>
            </motion.div>
          );
