@@ -1,98 +1,101 @@
-<<<<<<< HEAD
-import React, { useState } from 'react';
-import ReusableInput from '../../components/Inputs/index';
-import { auth } from './../../firebaseConfig';
+import React, { useContext, useState } from "react";
+import { auth } from "./../../firebaseConfig";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import UserContext from "../../contexts/UserContext";
 
-const Login = ({setCurrentUser}) => {
-  const [password, setPassword] = useState('');
+const Login = ({ setCurrentUser }) => {
+  const { login } = useContext(UserContext);
+  const [password, setPassword] = useState("");
 
-   onAuthStateChanged(auth, (user) => {
-    setCurrentUser(user)
-  })
+  onAuthStateChanged(auth, (user) => {
+    setCurrentUser(user);
+  });
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
-  const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
-=======
-// import React, { useState } from 'react';
-// import ReusableInput from '../../components/Inputs/index';
-import './login.css';
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
 
-const Login = () => {
-  // const [password, setPassword] = useState('');
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
 
-  // const handlePasswordChange = (e) => {
-  //   setPassword(e.target.value);
-  // };
-  // const [email, setEmail] = useState('');
->>>>>>> 810656c46dca780badb30ea1ab4f8acda61e0ebc
-
-  // const handleEmailChange = (e) => {
-  //   setEmail(e.target.value);
-  // };
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const logIn = async () => {
     setError("");
     try {
-        await signInWithEmailAndPassword(auth, email, password);
-        // console.log(data);
+      await signInWithEmailAndPassword(auth, email, password);
+      // console.log(data);
+      if (login) {
+        navigate("/student");
+      } else {
         navigate("/admin");
+      }
     } catch (e) {
       setError(e.message);
       console.log(e);
       alert(error);
     }
-  }
+  };
 
   return (
-<<<<<<< HEAD
-    <div>
-      <ReusableInput
-        type="email"
-        label="Email:"
-        placeholder="Enter your email"
-        value={email}
-        onChange={handleEmailChange}
-      />
-      <ReusableInput
-        type="password"
-        label="Password:"
-        placeholder="Enter your password"
-        value={password}
-        onChange={handlePasswordChange}
-      />
-     <button onClick={logIn}>Log in</button>
-=======
     <>
-  <div className="h-screen bg-[url(https://schoolings.org/wp-content/uploads/LASU-Matriculation-Ceremony.jpg)] flex justify-center items-center bg-no-repeat bg-cover bg-center object-contain bg-blend-multiply ">
-    <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
-      <div className="flex justify-center mb-8">
-        <img src="https://ug.lidc.lasu.edu.ng/ft-includes/assets/img/logo/logo.png" alt="Logo" className="w-30 h-20"/>
+      <div className="h-screen bg-[url(https://schoolings.org/wp-content/uploads/LASU-Matriculation-Ceremony.jpg)] flex justify-center items-center bg-no-repeat bg-cover bg-center object-contain bg-blend-multiply ">
+        <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
+          <div className="flex justify-center mb-8">
+            <img
+              src="https://ug.lidc.lasu.edu.ng/ft-includes/assets/img/logo/logo.png"
+              alt="Logo"
+              className="w-30 h-20"
+            />
+          </div>
+          <h1 className="text-2xl font-semibold text-center text-black mt-8 mb-6">
+            Log In
+          </h1>
+          <form onSubmit={(e) => e.preventDefault()}>
+            <div className="mb-6">
+              <label for="email" className="block mb-2 text-sm text-gray-600">
+                Enter your E-mail
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                required
+                onChange={handleEmailChange}
+              />
+            </div>
+            <div className="mb-6">
+              <label
+                for="password"
+                className="block mb-2 text-sm text-gray-600"
+              >
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                onChange={handlePasswordChange}
+                required
+              />
+            </div>
+            <button
+              className="w-32 bg-gradient-to-r bg-blue-500 to-cyan-600 text-white py-2 rounded-lg mx-auto block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 mt-4 mb-6"
+              onClick={logIn}
+            >
+              Login
+            </button>
+          </form>
+        </div>
       </div>
-      <h1 className="text-2xl font-semibold text-center text-black mt-8 mb-6">Log In</h1>
-      <form>
-        <div className="mb-6">
-          <label for="email" className="block mb-2 text-sm text-gray-600">Enter your E-mail</label>
-          <input type="email" id="email" name="email" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" required/>
-        </div>
-        <div className="mb-6">
-          <label for="password" className="block mb-2 text-sm text-gray-600">Password</label>
-          <input type="password" id="password" name="password" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" required/>
-        </div>
-        <button type="submit" className="w-32 bg-gradient-to-r bg-blue-500 to-cyan-600 text-white py-2 rounded-lg mx-auto block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 mt-4 mb-6">Login</button>
-      </form>
->>>>>>> 810656c46dca780badb30ea1ab4f8acda61e0ebc
-    </div>
-  </div>
     </>
   );
 };
 
 export default Login;
-

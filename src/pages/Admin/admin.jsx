@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import VideoCard from "../../components/VideoCard/VideoCard";
 import { Link, useNavigate } from "react-router-dom";
 import lasu from "../../Images/lasu.png";
@@ -6,14 +6,17 @@ import { useState } from "react";
 import FileUploadModal from "../../components/FileUploadModal/FileUploadModal";
 import { auth } from "./../../firebaseConfig";
 import { signOut } from "firebase/auth";
+import UserContext from "../../contexts/UserContext";
+// import Course from "./../Courses/Course"
 
 const Admin = ({ currentUser }) => {
   const [openModal, setOpenModal] = useState(false);
 
-  function showModal() {
-    setOpenModal((prev) => !prev);
-  }
+  const { videoLists } = useContext(UserContext);
+  const { videoDetails } = useContext(UserContext);
+
   const navigate = useNavigate();
+  // const location = useLocation();
   // console.log(currentUser);
   const logOut = async () => {
     await signOut(auth);
@@ -28,14 +31,14 @@ const Admin = ({ currentUser }) => {
             <Link to="/admin" className="hover:text-white active:text-white">
               Home
             </Link>
-            <Link to="courses" className="hover:text-white active:text-white">
+            <Link to="/courses" className="hover:text-white active:text-white">
               Course
             </Link>
           </div>
         </aside>
-        <main className="p-5 w-[78%] rounded-lg relative">
-        
-        {openModal && <FileUploadModal />}
+        <main className="p-5 w-[78%] rounded-lg relative overflow-x-scroll">
+          {openModal && <FileUploadModal />}
+
           <header className="flex justify-between items-center">
             <div className="flex items-center">
               <img
@@ -45,7 +48,7 @@ const Admin = ({ currentUser }) => {
               />
               <div>
                 <small className="text-gray-400">Welcome</small>
-                <h2 className="m-0 font-bold">Olatunbosun Olashubomi</h2>
+                <h2 className="m-0 font-bold">{currentUser?.email}</h2>
               </div>
             </div>
 
@@ -58,7 +61,7 @@ const Admin = ({ currentUser }) => {
             </div>
 
             <div className="buttons">
-              <small className="text-gray-400">Hi {currentUser?.email}</small>
+              {/* <small className="text-gray-400">Hi {currentUser?.email}</small> */}
               <button className="bg-blue-400 py-2 font-semibold m-1 px-5 text-white rounded-lg">
                 0
               </button>
@@ -80,31 +83,31 @@ const Admin = ({ currentUser }) => {
                 See all
               </Link>
             </div>
-            <div className="cards flex">
-              <VideoCard
-                thumbnail="https://images.pexels.com/photos/18410627/pexels-photo-18410627/free-photo-of-istanbul-besiktas.jpeg?"
-                title="Python Course knlksdloilosloe"
-                howLong="72 hours"
-                totalVideo={30}
-              />
-              <VideoCard
-                thumbnail="https://images.pexels.com/photos/18410627/pexels-photo-18410627/free-photo-of-istanbul-besiktas.jpeg?"
-                title="Python Course knlksdloilosloe"
-                howLong="72 hours"
-                totalVideo={30}
-              />
-
-              <VideoCard
-                thumbnail="https://images.pexels.com/photos/18410627/pexels-photo-18410627/free-photo-of-istanbul-besiktas.jpeg?"
-                title="Python Course knlksdloilosloe"
-                howLong="72 hours"
-                totalVideo={30}
-              />
+            <div className="flex flex-wrap gap-3">
+              {videoLists.length < 0 ? (
+                <p className="text-center">No Videos Found </p>
+              ) : (
+                videoDetails
+                  .slice(0, 4)
+                  .map(
+                    ({ createdAt, title, sections, howLong, id, videoUrl }) => {
+                      return (
+                        <VideoCard
+                          key={id}
+                          thumbnail={videoUrl}
+                          title={title}
+                          howLong={howLong}
+                          totalVideo={createdAt.year}
+                        />
+                      );
+                    }
+                  )
+              )}
             </div>
           </div>
           <button
-            className="border-2 border-blue-400 w-10 h-10 font-bold rounded-md text-2xl text-blue-400 bg-white absolute bottom-5 right-5"
-            onClick={showModal}
+            className="border-2 border-blue-400 w-10 h-10 font-bold rounded-md text-2xl text-blue-400 bg-white fixed bottom-5 right-5"
+            onClick={() => setOpenModal((prev) => !prev)}
           >
             +
           </button>

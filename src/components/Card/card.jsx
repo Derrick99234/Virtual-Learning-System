@@ -1,6 +1,8 @@
 import React from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useNavigate } from "react-router-dom"
 
+// import { useNavigate } from "react-router-dom";
 
 
 const Example = () => {
@@ -48,6 +50,10 @@ const TiltCard = () => {
     x.set(0);
     y.set(0);
   };
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate("/login");
+  };
 
   return (
     <motion.div
@@ -66,7 +72,9 @@ const TiltCard = () => {
           transformStyle: "preserve-3d",
           
         }}
-        className="absolute inset-4 grid place-content-center rounded-xl bg-white shadow-lg bg-gradient-to-br from-black to-blue-500 text-white" >
+        className="absolute inset-4 grid place-content-center rounded-xl bg-white shadow-lg bg-gradient-to-br from-black to-blue-500 text-white"
+          onClick={handleClick}
+         >
            <h3 className='text-2xl text-center'>Login as a Student</h3>
         <span className="text-center text-[10px]">To view your progress an to achieve more on what you do </span>
       </div>
