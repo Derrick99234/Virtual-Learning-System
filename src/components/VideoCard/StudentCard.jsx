@@ -1,9 +1,4 @@
-// import {useNavigate} from "react-router-dom"
-
-import DeleteVideo from "../DeleteVideo";
-
-function VideoCard({ thumbnail, title, alt = title, howLong, id }) {
-  // const navigate = useNavigate()
+const StudentCard = ({ thumbnail, title, alt = title, howLong, id }) => {
   const playVideo = () => {
     // console.log(thumbnail);
     window.open(`${thumbnail}`, "_blank");
@@ -33,12 +28,11 @@ function VideoCard({ thumbnail, title, alt = title, howLong, id }) {
             >
               Play
             </button>
-            <DeleteVideo id={id} videoUrl={thumbnail} />
           </div>
         </div>
       </div>
     </>
   );
-}
+};
 
-export default VideoCard;
+export default StudentCard;

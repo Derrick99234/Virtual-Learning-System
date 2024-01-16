@@ -1,11 +1,11 @@
-import { useState, forwardRef } from "react";
+import { useState } from "react";
 import { storage, db } from "./../../firebaseConfig";
-import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 // import { v4 } from "uuid";
 import { Timestamp, addDoc, collection } from "firebase/firestore";
 import { toast } from "react-toastify";
 
-const FileUploadModal = forwardRef((props, ref) => {
+function FileUploadModal({ setOpenModal }) {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -88,6 +88,12 @@ const FileUploadModal = forwardRef((props, ref) => {
     <>
       <section className="fixed bg-black/50 top-0 left-0 bottom-0 right-0">
         <div className="w-[300px] h-[500px] bg-white rounded-md absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] items-center p-3 overflow-hidden">
+          <span
+            classNmae="font-bold text-lg text-right w-full"
+            onClick={() => setOpenModal(false)}
+          >
+            X
+          </span>
           <div>
             <label htmlFor="title">Title</label>
             <input
@@ -151,6 +157,6 @@ const FileUploadModal = forwardRef((props, ref) => {
       </section>
     </>
   );
-});
+}
 
 export default FileUploadModal;

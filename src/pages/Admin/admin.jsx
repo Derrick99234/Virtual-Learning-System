@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import VideoCard from "../../components/VideoCard/VideoCard";
 import { Link, useNavigate } from "react-router-dom";
 import lasu from "../../Images/lasu.png";
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import FileUploadModal from "../../components/FileUploadModal/FileUploadModal";
 import { auth } from "./../../firebaseConfig";
 import { signOut } from "firebase/auth";
@@ -11,23 +11,8 @@ import UserContext from "../../contexts/UserContext";
 const Admin = ({ currentUser }) => {
   const [openModal, setOpenModal] = useState(false);
 
-  const windowRef = useRef(null);
   // const { videoLists } = useContext(UserContext);
   const { videoDetails } = useContext(UserContext);
-
-  useEffect(() => {
-    const handleOutsideClick = (event) => {
-      if (windowRef.current && !windowRef.current.contains(event.target)) {
-        setOpenModal(false);
-      }
-    };
-
-    window.addEventListener("click", handleOutsideClick);
-
-    return () => {
-      window.removeEventListener("click", handleOutsideClick);
-    };
-  }, []);
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -138,7 +123,7 @@ const Admin = ({ currentUser }) => {
           </button>
         </main>
       </section>
-      {openModal && <FileUploadModal ref={windowRef} />}
+      {openModal && <FileUploadModal setOpenModal={setOpenModal} />}
     </>
   );
 };
