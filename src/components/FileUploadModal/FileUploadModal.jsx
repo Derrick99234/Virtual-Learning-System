@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, forwardRef } from "react";
 import { storage, db } from "./../../firebaseConfig";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
 // import { v4 } from "uuid";
 import { Timestamp, addDoc, collection } from "firebase/firestore";
 import { toast } from "react-toastify";
 
-function FileUploadModal() {
+const FileUploadModal = forwardRef((props, ref) => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -86,68 +86,71 @@ function FileUploadModal() {
 
   return (
     <>
-      <div className="w-[300px] h-[500px] bg-white rounded-md absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] items-center z-10 p-3">
-        <div>
-          <label htmlFor="title">Title</label>
-          <input
-            name="title"
-            type="text"
-            className="w-full p-2 border-2 border-gray-400 block rounded-md mb-2"
-            value={formData.title}
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
-
-        <div>
-          <label htmlFor="howLong">
-            Video length {/*<em className="text-xs">(only number allowed)</em>*/}
-          </label>
-          <input
-            name="howLong"
-            type="text"
-            className="w-full p-2 border-2 border-gray-400 block rounded-md mb-2"
-            value={formData.howLong}
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
-
-        <div>
-          <label htmlFor="description" classame="">
-            Description
-          </label>
-          <textarea
-            name="description"
-            type="text"
-            className="w-full p-2 border-2 border-gray-400 block rounded-md mb-2 h-[150px]"
-            value={formData.description}
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
-        <input
-          type="file"
-          accept="video/*"
-          onChange={(e) =>
-            setFormData({ ...formData, video: e.target.files[0] })
-          }
-          name="video"
-        />
-        {progress === 0 ? null : (
-          <div
-            className="m-1 text-white bg-blue-400 h-3 align-middle text-center rounded-lg"
-            style={{ width: `${progress}%` }}
-          >
-            {progress}%
+      <section className="fixed bg-black/50 top-0 left-0 bottom-0 right-0">
+        <div className="w-[300px] h-[500px] bg-white rounded-md absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] items-center p-3 overflow-hidden">
+          <div>
+            <label htmlFor="title">Title</label>
+            <input
+              name="title"
+              type="text"
+              className="w-full p-2 border-2 border-gray-400 block rounded-md mb-2"
+              value={formData.title}
+              onChange={(e) => handleChange(e)}
+            />
           </div>
-        )}
-        <button
-          onClick={uploadVideo}
-          className="bg-blue-500 rounded-md p-2 w-full text-white font-bold"
-        >
-          submit
-        </button>
-      </div>
+
+          <div>
+            <label htmlFor="howLong">
+              Video length{" "}
+              {/*<em className="text-xs">(only number allowed)</em>*/}
+            </label>
+            <input
+              name="howLong"
+              type="text"
+              className="w-full p-2 border-2 border-gray-400 block rounded-md mb-2"
+              value={formData.howLong}
+              onChange={(e) => handleChange(e)}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="description" classame="">
+              Description
+            </label>
+            <textarea
+              name="description"
+              type="text"
+              className="w-full p-2 border-2 border-gray-400 block rounded-md mb-2 h-[150px]"
+              value={formData.description}
+              onChange={(e) => handleChange(e)}
+            />
+          </div>
+          <input
+            type="file"
+            accept="video/*"
+            onChange={(e) =>
+              setFormData({ ...formData, video: e.target.files[0] })
+            }
+            name="video"
+          />
+          {progress === 0 ? null : (
+            <div
+              className="m-1 text-white bg-blue-400 p-3 text-center rounded-lg"
+              style={{ width: `${progress}%` }}
+            >
+              {progress}%
+            </div>
+          )}
+          <button
+            onClick={uploadVideo}
+            className="bg-blue-500 rounded-md p-2 w-full text-white font-bold"
+          >
+            submit
+          </button>
+        </div>
+      </section>
     </>
   );
-}
+});
 
 export default FileUploadModal;

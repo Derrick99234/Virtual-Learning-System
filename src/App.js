@@ -3,6 +3,7 @@ import FourZeroFour from "./pages/fourzerofour/index";
 import Admin from "./pages/Admin/admin";
 import Home from "./pages/Home/index";
 import Login from "./pages/Login/login";
+import AdminLogin from "./pages/Login/AdminLogin";
 import Student from "./pages/Student/student";
 import Register from "./pages/Register/register";
 import Profile from "./pages/Profile/profile";
@@ -20,7 +21,6 @@ const App = () => {
   const [currentUser, setCurrentUser] = useState({});
   const [videoLists, setVideoLists] = useState([]);
   const [videoDetails, setVideoDetails] = useState([]);
-  const [login, setLogin] = useState(true);
 
   const imageListRef = ref(storage, "UploadedVideos");
 
@@ -57,8 +57,6 @@ const App = () => {
             videoDetails,
             setCurrentUser,
             currentUser,
-            login,
-            setLogin
           }}
         >
           <Routes>
@@ -82,7 +80,7 @@ const App = () => {
                   </ProtectedRoute>
                 }
               />
-              <Route path="/courses" element={<Course />} />
+              <Route path="/admin-courses" element={<Course />} />
               <Route path="/profile" element={<Profile />} />
               <Route
                 path="/complete-registration"
@@ -96,6 +94,10 @@ const App = () => {
                 element={<Login setCurrentUser={setCurrentUser} />}
               />
             </Route>
+            <Route
+              path="/AdminLogin"
+              element={<AdminLogin setCurrentUser={setCurrentUser} />}
+            />
           </Routes>
         </UserContext.Provider>
       </BrowserRouter>

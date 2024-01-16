@@ -1,19 +1,31 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import VideoCard from "../../components/VideoCard/VideoCard";
 import { Link } from "react-router-dom";
 import lasu from "../../Images/lasu.png";
 // import { useState } from "react";
 // import FileUploadModal from "../../components/FileUploadModal/FileUploadModal";
-// import { auth } from "./../../firebaseConfig";
-// import { signOut } from "firebase/auth";
+import { auth } from "./../../firebaseConfig";
+import { signOut } from "firebase/auth";
+import {useNavigate} from "react-router-dom"
 import UserContext from "../../contexts/UserContext";
 // import Course from "./../Courses/Course"
 
-const Course = () => {
+const Course = ({currentUser}) => {
+  const navigate = useNavigate();
   // const [openModal, setOpenModal] = useState(false);
 
-  const { videoLists } = useContext(UserContext);
+  const logOut = async () => {
+    await signOut(auth);
+    navigate("/login");
+  };
+
+  // const { videoLists } = useContext(UserContext);
   const { videoDetails } = useContext(UserContext);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredVideos = videoDetails.filter((video) =>
+    video.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   // const navigate = useNavigate();
   // const location = useLocation();
@@ -31,7 +43,7 @@ const Course = () => {
             <Link to="/admin" className="hover:text-white active:text-white">
               Home
             </Link>
-            <Link to="/courses" className="hover:text-white active:text-white">
+            <Link to="/admin-courses" className="hover:text-white active:text-white">
               Course
             </Link>
           </div>
@@ -39,7 +51,7 @@ const Course = () => {
         <main className="p-5 w-[78%] rounded-lg relative overflow-x-scroll">
           {/* {openModal && <FileUploadModal />} */}
 
-          {/* <header className="flex justify-between items-center">
+          <header className="flex justify-between items-center">
             <div className="flex items-center">
               <img
                 src="https://cdn.pixabay.com/photo/2020/03/24/20/59/car-4965498_640.jpg"
@@ -56,12 +68,14 @@ const Course = () => {
               <input
                 type="text"
                 className="w-[300px] rounded-md border-2 border-blue-500 p-3 h-10"
-                placeholder="search course here"
+                placeholder="Search course here"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
 
             <div className="buttons">
-               <small className="text-gray-400">Hi {currentUser?.email}</small> 
+              {/* <small className="text-gray-400">Hi {currentUser?.email}</small> */}
               <button className="bg-blue-400 py-2 font-semibold m-1 px-5 text-white rounded-lg">
                 0
               </button>
@@ -72,28 +86,28 @@ const Course = () => {
                 Log out
               </button>
             </div>
-          </header> */}
+          </header>
           <div className="bg-slate-100 h-[180px] rounded-md p-3">
             <div className="flex justify-between p-2 items-center">
               <h2 className=" text-blue-500 font-bold">All course</h2>
             </div>
             <div className="flex flex-wrap gap-3">
-              {videoLists.length < 0 ? (
-                <p className="text-center">No Videos Found </p>
+              {filteredVideos.length === 0 ? (
+                <p className="text-center">No Videos Found</p>
               ) : (
-                videoDetails.map(
-                  ({ createdAt, title, sections, howLong, id, videoUrl }) => {
+                filteredVideos
+                  .map(({ createdAt, title, howLong, id, videoUrl }) => {
                     return (
                       <VideoCard
                         key={id}
+                        id={id}
                         thumbnail={videoUrl}
                         title={title}
                         howLong={howLong}
-                        totalVideo={createdAt.year}
+                        totalVideo={createdAt}
                       />
                     );
-                  }
-                )
+                  })
               )}
             </div>
           </div>

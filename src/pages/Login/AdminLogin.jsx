@@ -29,7 +29,7 @@ const Login = ({ setCurrentUser }) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       // console.log(data);
-      navigate("/student");
+      navigate("/admin");
     } catch (e) {
       setError(e.message);
       console.log(e);
@@ -49,7 +49,7 @@ const Login = ({ setCurrentUser }) => {
             />
           </div>
           <h1 className="text-2xl font-semibold text-center text-black mt-8 mb-6">
-            Log In (As Student)
+            Log In (As Admin)
           </h1>
           <form onSubmit={(e) => e.preventDefault()}>
             <div className="mb-6">
@@ -95,9 +95,9 @@ const Login = ({ setCurrentUser }) => {
             </Link>
           </small>
           <small>
-            continue as an
-            <Link to="/AdminLogin" className="text-blue-500 text-right">
-              admin
+            continue as a
+            <Link to="/login" className="text-blue-500 text-right">
+              student
             </Link>
           </small>
         </div>

@@ -6,7 +6,7 @@ import UserContext from "../../contexts/UserContext";
 const Register = () => {
   const navigate = useNavigate();
 
-   const { user, setUser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   const getEmailValue = () => {
     navigate("/complete-registration");
@@ -71,7 +71,10 @@ const Register = () => {
 
           <p>
             Already have an acct?
-            <Link to="/" className="text-blue-400 ml-1 hover:text-blue-500">
+            <Link
+              to="/login"
+              className="text-blue-400 ml-1 hover:text-blue-500"
+            >
               login
             </Link>
           </p>

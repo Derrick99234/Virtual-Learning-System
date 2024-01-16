@@ -2,18 +2,38 @@ import React, { useContext } from "react";
 import VideoCard from "../../components/VideoCard/VideoCard";
 import { Link, useNavigate } from "react-router-dom";
 import lasu from "../../Images/lasu.png";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import FileUploadModal from "../../components/FileUploadModal/FileUploadModal";
 import { auth } from "./../../firebaseConfig";
 import { signOut } from "firebase/auth";
 import UserContext from "../../contexts/UserContext";
 // import Course from "./../Courses/Course"
-
 const Admin = ({ currentUser }) => {
   const [openModal, setOpenModal] = useState(false);
 
-  const { videoLists } = useContext(UserContext);
+  const windowRef = useRef(null);
+  // const { videoLists } = useContext(UserContext);
   const { videoDetails } = useContext(UserContext);
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (windowRef.current && !windowRef.current.contains(event.target)) {
+        setOpenModal(false);
+      }
+    };
+
+    window.addEventListener("click", handleOutsideClick);
+
+    return () => {
+      window.removeEventListener("click", handleOutsideClick);
+    };
+  }, []);
+
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredVideos = videoDetails.filter((video) =>
+    video.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const navigate = useNavigate();
   // const location = useLocation();
@@ -31,14 +51,18 @@ const Admin = ({ currentUser }) => {
             <Link to="/admin" className="hover:text-white active:text-white">
               Home
             </Link>
-            <Link to="/courses" className="hover:text-white active:text-white">
+            <Link
+              to="/admin-courses"
+              className="hover:text-white active:text-white"
+            >
               Course
+            </Link>
+            <Link to="/" className="hover:text-white active:text-white">
+              Add Account
             </Link>
           </div>
         </aside>
-        <main className="p-5 w-[78%] rounded-lg relative overflow-x-scroll">
-          {openModal && <FileUploadModal />}
-
+        <main className="p-5 w-[78%] rounded-lg overflow-x-scroll">
           <header className="flex justify-between items-center">
             <div className="flex items-center">
               <img
@@ -56,7 +80,9 @@ const Admin = ({ currentUser }) => {
               <input
                 type="text"
                 className="w-[300px] rounded-md border-2 border-blue-500 p-3 h-10"
-                placeholder="search course here"
+                placeholder="Search course here"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
 
@@ -84,35 +110,35 @@ const Admin = ({ currentUser }) => {
               </Link>
             </div>
             <div className="flex flex-wrap gap-3">
-              {videoLists.length < 0 ? (
-                <p className="text-center">No Videos Found </p>
+              {filteredVideos.length === 0 ? (
+                <p className="text-center">No Videos Found</p>
               ) : (
-                videoDetails
+                filteredVideos
                   .slice(0, 4)
-                  .map(
-                    ({ createdAt, title, sections, howLong, id, videoUrl }) => {
-                      return (
-                        <VideoCard
-                          key={id}
-                          thumbnail={videoUrl}
-                          title={title}
-                          howLong={howLong}
-                          totalVideo={createdAt.year}
-                        />
-                      );
-                    }
-                  )
+                  .map(({ createdAt, title, howLong, id, videoUrl }) => {
+                    return (
+                      <VideoCard
+                        key={id}
+                        id={id}
+                        thumbnail={videoUrl}
+                        title={title}
+                        howLong={howLong}
+                        totalVideo={createdAt}
+                      />
+                    );
+                  })
               )}
             </div>
           </div>
           <button
             className="border-2 border-blue-400 w-10 h-10 font-bold rounded-md text-2xl text-blue-400 bg-white fixed bottom-5 right-5"
-            onClick={() => setOpenModal((prev) => !prev)}
+            onClick={() => setOpenModal(true)}
           >
             +
           </button>
         </main>
       </section>
+      {openModal && <FileUploadModal ref={windowRef} />}
     </>
   );
 };

@@ -1,37 +1,52 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { auth } from "./../../firebaseConfig";
-import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/UserContext";
 
-function ComplteRegistrationPage({setCurrentUser}) {
+function ComplteRegistrationPage({ setCurrentUser }) {
   const [userPass, setUserPass] = useState("");
   const [userPass2, setUserPass2] = useState("");
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  onAuthStateChanged(auth, (user) => {
-    setCurrentUser(user)
-  })
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (user) => {
+        setCurrentUser(user);
+      },
+      (error) => {
+        console.error("Error in onAuthStateChanged:", error);
+      }
+    );
+
+    // Cleanup the listener when the component unmounts
+    return () => unsubscribe();
+  }, [setCurrentUser]);
 
   const { user, setUser } = useContext(UserContext);
 
   const ValidateUser = async () => {
     setError("");
-    try {
-      if (userPass === userPass2) {
 
+    if (userPass === userPass2) {
+      try {
         await createUserWithEmailAndPassword(auth, user, userPass);
-        navigate("/admin");
-      } else {
-        alert('password does not match')
+        navigate("/login");
+      } catch (e) {
+        setError(e.message);
+        console.error(e);
+        alert(error);
       }
-    } catch (e) {
-      setError(e.message);
-      console.log(e);
-      alert(error);
+    } else {
+      alert("Password does not match");
     }
   };
+
   return (
     <>
       <section
@@ -114,7 +129,7 @@ function ComplteRegistrationPage({setCurrentUser}) {
                   id="password2"
                   placeholder="Confirm Your Password"
                   className="w-full border-2 border-solid border-gray-400 h-12 p-3 my-3 font-sans text-md rounded-md"
-                   onChange={(e) => setUserPass2(e.target.value)}
+                  onChange={(e) => setUserPass2(e.target.value)}
                 />
                 <span className="FaEye"></span>
               </label>
