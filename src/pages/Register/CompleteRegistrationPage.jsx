@@ -1,37 +1,33 @@
 import React, { useState, useContext } from "react";
-import { auth } from "./../../firebaseConfig";
-import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/UserContext";
 
-function ComplteRegistrationPage({setCurrentUser}) {
+function ComplteRegistrationPage() {
   const [userPass, setUserPass] = useState("");
   const [userPass2, setUserPass2] = useState("");
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  onAuthStateChanged(auth, (user) => {
-    setCurrentUser(user)
-  })
-
   const { user, setUser } = useContext(UserContext);
+  const { createUser } = useContext(UserContext);
 
   const ValidateUser = async () => {
     setError("");
-    try {
-      if (userPass === userPass2) {
-
-        await createUserWithEmailAndPassword(auth, user, userPass);
-        navigate("/admin");
-      } else {
-        alert('password does not match')
+    if (userPass === userPass2) {
+      try {
+        await createUser(user, userPass);
+        alert("Account created successfully \n Login with your Details");
+        navigate("/login");
+      } catch (e) {
+        setError(e.message);
+        console.error(e);
+        alert(error);
       }
-    } catch (e) {
-      setError(e.message);
-      console.log(e);
-      alert(error);
+    } else {
+      alert("Password does not match");
     }
   };
+
   return (
     <>
       <section
@@ -114,7 +110,7 @@ function ComplteRegistrationPage({setCurrentUser}) {
                   id="password2"
                   placeholder="Confirm Your Password"
                   className="w-full border-2 border-solid border-gray-400 h-12 p-3 my-3 font-sans text-md rounded-md"
-                   onChange={(e) => setUserPass2(e.target.value)}
+                  onChange={(e) => setUserPass2(e.target.value)}
                 />
                 <span className="FaEye"></span>
               </label>
