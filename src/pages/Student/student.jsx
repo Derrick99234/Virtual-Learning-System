@@ -4,14 +4,12 @@ import lasu from "../../Images/lasu.png";
 import { useState, useContext } from "react";
 import UserContext from "../../contexts/UserContext";
 import StudentCard from "../../components/VideoCard/StudentCard";
-import { signOut } from "firebase/auth";
-import { auth } from "../../firebaseConfig";
 
 function Student({ currentUser }) {
   // const [openModal, setOpenModal] = useState(false);
 
   // const { videoLists } = useContext(UserContext);
-  const { videoDetails } = useContext(UserContext);
+  const { videoDetails, logOut } = useContext(UserContext);
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -22,9 +20,10 @@ function Student({ currentUser }) {
   const navigate = useNavigate();
   // const location = useLocation();
   // console.log(currentUser);
-  const logOut = async () => {
-    await signOut(auth);
-    navigate("/login");
+  const handleLogOut = async () => {
+    await logOut();
+    alert("Your are currently Log Out");
+    navigate("/home");
   };
   return (
     <>
@@ -77,7 +76,7 @@ function Student({ currentUser }) {
               </button>
               <button
                 className="bg-blue-400 py-2 font-semibold m-1 px-5 text-white rounded-lg"
-                onClick={logOut}
+                onClick={handleLogOut}
               >
                 Log out
               </button>
@@ -114,9 +113,6 @@ function Student({ currentUser }) {
               )}
             </div>
           </div>
-          <button className="border-2 border-blue-400 w-10 h-10 font-bold rounded-md text-2xl text-blue-400 bg-white fixed bottom-5 right-5">
-            +
-          </button>
         </main>
       </section>
     </>

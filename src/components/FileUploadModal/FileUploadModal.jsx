@@ -67,7 +67,7 @@ function FileUploadModal({ setOpenModal }) {
             howLong: "",
           });
           setProgress(0);
-
+          alert('"Video uploaded successfully"');
           // Show success toast
           toast("Video uploaded successfully", { type: "success" });
         } catch (error) {
@@ -79,6 +79,7 @@ function FileUploadModal({ setOpenModal }) {
             "An error occurred while updating Firestore or getting download URL",
             { type: "error" }
           );
+          alert("An error occurred while updating Video");
         }
       }
     );
@@ -87,9 +88,15 @@ function FileUploadModal({ setOpenModal }) {
   return (
     <>
       <section className="fixed bg-black/50 top-0 left-0 bottom-0 right-0">
-        <div className="w-[300px] h-[500px] bg-white rounded-md absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] items-center p-3 overflow-hidden">
+        <span
+          className="font-bold text-white text-lg absolute top-[20px] right-[20px] cursor-pointer"
+          onClick={() => setOpenModal(false)}
+        >
+          X
+        </span>
+        <div className="w-[300px] h-[500px] bg-white rounded-md absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] items-center p-3 overflow-hidden pt-7">
           <span
-            classNmae="font-bold text-lg text-right w-full"
+            className="font-bold text-lg absolute top-[20px] right-[20px] cursor-pointer"
             onClick={() => setOpenModal(false)}
           >
             X
@@ -149,7 +156,7 @@ function FileUploadModal({ setOpenModal }) {
           )}
           <button
             onClick={uploadVideo}
-            className="bg-blue-500 rounded-md p-2 w-full text-white font-bold"
+            className="bg-blue-500 rounded-md p-2 w-full text-white font-bold mt-4"
           >
             submit
           </button>

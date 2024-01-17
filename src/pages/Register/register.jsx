@@ -6,10 +6,18 @@ import UserContext from "../../contexts/UserContext";
 const Register = () => {
   const navigate = useNavigate();
 
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser, googleSignIn } = useContext(UserContext);
 
   const getEmailValue = () => {
     navigate("/complete-registration");
+  };
+  const handleGoogleSignIn = async () => {
+    try {
+      await googleSignIn();
+      navigate("/admin");
+    } catch (e) {
+      alert(e);
+    }
   };
 
   return (
@@ -34,7 +42,10 @@ const Register = () => {
           <h2 className="font-extrabold text-xl">Register</h2>
           <p className="font-light text-gray-400">To continue to VLS</p>
           <div>
-            <p className="w-full h-10 bg-slate-50 border-gray-400 border-solid border-2 rounded-sm flex p-2 gap-2 mt-5 hover:cursor-pointer">
+            <p
+              className="w-full h-10 bg-slate-50 border-gray-400 border-solid border-2 rounded-sm flex p-2 gap-2 mt-5 hover:cursor-pointer"
+              onClick={handleGoogleSignIn}
+            >
               <img
                 src="https://cdn4.iconfinder.com/data/icons/new-google-logo-2015/400/new-google-favicon-512.png"
                 alt=""

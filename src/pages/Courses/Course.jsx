@@ -6,11 +6,11 @@ import lasu from "../../Images/lasu.png";
 // import FileUploadModal from "../../components/FileUploadModal/FileUploadModal";
 import { auth } from "./../../firebaseConfig";
 import { signOut } from "firebase/auth";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/UserContext";
 // import Course from "./../Courses/Course"
 
-const Course = ({currentUser}) => {
+const Course = () => {
   const navigate = useNavigate();
   // const [openModal, setOpenModal] = useState(false);
 
@@ -19,7 +19,7 @@ const Course = ({currentUser}) => {
     navigate("/login");
   };
 
-  // const { videoLists } = useContext(UserContext);
+  const { currentUser } = useContext(UserContext);
   const { videoDetails } = useContext(UserContext);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -43,7 +43,10 @@ const Course = ({currentUser}) => {
             <Link to="/admin" className="hover:text-white active:text-white">
               Home
             </Link>
-            <Link to="/admin-courses" className="hover:text-white active:text-white">
+            <Link
+              to="/admin-courses"
+              className="hover:text-white active:text-white"
+            >
               Course
             </Link>
           </div>
@@ -95,8 +98,8 @@ const Course = ({currentUser}) => {
               {filteredVideos.length === 0 ? (
                 <p className="text-center">No Videos Found</p>
               ) : (
-                filteredVideos
-                  .map(({ createdAt, title, howLong, id, videoUrl }) => {
+                filteredVideos.map(
+                  ({ createdAt, title, howLong, id, videoUrl }) => {
                     return (
                       <VideoCard
                         key={id}
@@ -107,7 +110,8 @@ const Course = ({currentUser}) => {
                         totalVideo={createdAt}
                       />
                     );
-                  })
+                  }
+                )
               )}
             </div>
           </div>

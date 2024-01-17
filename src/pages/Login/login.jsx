@@ -1,21 +1,15 @@
-import React, { useState } from "react";
-import { auth } from "./../../firebaseConfig";
-import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
-// import UserContext from "../../contexts/UserContext";
+import UserContext from "../../contexts/UserContext";
 
-const Login = ({ setCurrentUser }) => {
-  // const { login } = useContext(UserContext);
-  const [password, setPassword] = useState("");
-
-  onAuthStateChanged(auth, (user) => {
-    setCurrentUser(user);
-  });
+const Login = () => {
+  const { signInUser } = useContext(UserContext);
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const handleEmailChange = (e) => {
@@ -27,7 +21,7 @@ const Login = ({ setCurrentUser }) => {
   const logIn = async () => {
     setError("");
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await signInUser(email, password);
       // console.log(data);
       navigate("/student");
     } catch (e) {

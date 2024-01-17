@@ -1,41 +1,22 @@
-import React, { useState, useContext, useEffect } from "react";
-import { auth } from "./../../firebaseConfig";
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-} from "firebase/auth";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/UserContext";
 
-function ComplteRegistrationPage({ setCurrentUser }) {
+function ComplteRegistrationPage() {
   const [userPass, setUserPass] = useState("");
   const [userPass2, setUserPass2] = useState("");
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(
-      auth,
-      (user) => {
-        setCurrentUser(user);
-      },
-      (error) => {
-        console.error("Error in onAuthStateChanged:", error);
-      }
-    );
-
-    // Cleanup the listener when the component unmounts
-    return () => unsubscribe();
-  }, [setCurrentUser]);
-
   const { user, setUser } = useContext(UserContext);
+  const { createUser } = useContext(UserContext);
 
   const ValidateUser = async () => {
     setError("");
-
     if (userPass === userPass2) {
       try {
-        await createUserWithEmailAndPassword(auth, user, userPass);
+        await createUser(user, userPass);
+        alert("Account created successfully \n Login with your Details");
         navigate("/login");
       } catch (e) {
         setError(e.message);
